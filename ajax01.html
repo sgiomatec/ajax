@@ -7,8 +7,21 @@
 
   </head>
   	<body>
+      <button onclick="mostrar()">click here</button>
+      <button onclick="mostrar2()">get from other</button>
+      <button onclick="getjson()">get from json</button>
+      <button onclick="getgo()">get from go</button>
         <div id="lugardetrabajo">
-           
+
+        </div>
+        <div id="campo2">
+
+        </div>
+        <div id="jso">
+
+        </div>
+        <div id="go">
+
         </div>
 
 
@@ -35,7 +48,7 @@
 
         xmlhttp.onreadystatechange=function()
           {
-          
+
           if (xmlhttp.readyState==4 && xmlhttp.status==200)
             {
             document.getElementById("lugardetrabajo").innerHTML=xmlhttp.responseText;
@@ -48,6 +61,102 @@
           xmlhttp.open("GET","nojson.txt",true);
           xmlhttp.send();
       }
+
+
+      function mostrar2()
+      {
+
+        if (window.XMLHttpRequest)
+          {
+            xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+
+
+
+        xmlhttp.onreadystatechange=function()
+          {
+
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+            document.getElementById("campo2").innerHTML=xmlhttp.responseText;
+
+            }
+
+
+          }
+
+          xmlhttp.open("GET","random.txt",true);
+          xmlhttp.send();
+      }
+
+      function getjson()
+      {
+
+        if (window.XMLHttpRequest)
+          {
+            xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+
+
+
+        xmlhttp.onreadystatechange=function()
+          {
+
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+
+            var AA=JSON.parse(xmlhttp.responseText);
+            console.log(AA.name);
+            document.getElementById("jso").innerHTML="name: "+AA.name+" age: "+AA.age;
+
+            }
+
+
+          }
+
+          xmlhttp.open("GET","https://raw.githubusercontent.com/OscarDelToro/tarea2.1/master/aa.json",true);
+          xmlhttp.send();
+      }
+      function getgo()
+      {
+
+        if (window.XMLHttpRequest)
+          {
+            xmlhttp=new XMLHttpRequest();
+          }
+        else
+          {
+          xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+          }
+
+
+
+        xmlhttp.onreadystatechange=function()
+          {
+
+          if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+
+            document.getElementById("go").innerHTML=xmlhttp.responseText;
+
+            }
+
+
+          }
+
+          xmlhttp.open("GET","localhost:8080",true);
+          xmlhttp.send();
+      }
+
+
 
 
               </script>

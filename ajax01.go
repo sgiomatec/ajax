@@ -10,9 +10,12 @@ import (
 
 
 func darMensaje(w http.ResponseWriter, r *http.Request) {
-  
-  
-  fmt.Printf("%s", r)
+  fmt.Printf("%s\n", r.Referer())
+  //fmt.Printf("%s\n", r.URL)
+  //fmt.Printf("%s", r.Method)
+  //fmt.Printf("%s", r.UserAgent())
+  //fmt.Fprintf(w, "something at the array: %d! \n'", data[4])
+  //http.ServeFile(w, r, "ajax02.html")
 
 
 

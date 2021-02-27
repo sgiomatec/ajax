@@ -70,12 +70,12 @@
             		}
           		}
 
-            //var cadena="/dato"
-          	//xmlhttp.open("POST",cadena,true);
-               xmlhttp.open("GET","/dato",true);
-            // xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            // xmlhttp.send("y=3");
-          	   xmlhttp.send();
+            var cadena="/dato"
+          	xmlhttp.open("POST",cadena,true);
+              // xmlhttp.open("GET","/dato",true);
+            xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            xmlhttp.send("y=3");
+          	  // xmlhttp.send();
       		}
 
       		document.getElementById("espacio").addEventListener("click",mostrar);
