@@ -74,8 +74,9 @@
           //xmlhttp.setRequestHeader("y", "3")
          // xmlhttp.setRequestHeader("n", "jugable")
 
-          xmlhttp.open("POST","http://localhost:8080/reto2",true);
-          xmlhttp.send("p=3&n=jugable");
+         xmlhttp.open("POST","http://localhost:8080/reto2",true);
+         xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+         xmlhttp.send("y=3&n=jugable");
       }
 
 

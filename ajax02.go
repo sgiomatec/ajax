@@ -73,7 +73,7 @@ func reto1(w http.ResponseWriter, r *http.Request) {
 }
 func reto2(w http.ResponseWriter, r *http.Request) {
  
-  arreglo := [6]string{"{\"Persona\":\"Nick\",\"Libro\":\"Orgullo y Prejuicio\",\"mascota\":\"manchas\"}",
+  arreglo := [4]string{"{\"Persona\":\"Nick\",\"Libro\":\"Orgullo y Prejuicio\",\"mascota\":\"manchas\"}",
                        "{\"Persona\":\"Luis\",\"Libro\":\"Harry Potter\",\"mascota\":\"Sissi\"}",
                        "{\"Persona\":\"Chris\",\"Libro\":\"Quiubole con\",\"mascota\":\"Nina\"}",
                        "{\"Persona\":\"Oscar\",\"Libro\":\"Sapiens\",\"mascota\":\"Pirata\"}"}
@@ -82,13 +82,21 @@ func reto2(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm() 
   w.Header().Set("Content-Type", "application/json") 
   
-    pos := r.Form.Get("p")
-    fmt.Printf("%s\n",pos);
-    i , _:=strconv.Atoi(pos)
-    fmt.Printf("%d\n",i);
+    /* index := r.Form.Get("y")
+    fmt.Printf("Position: %s\n",index);
+    i , _:=strconv.Atoi(index)
+    fmt.Printf("value: %d\n",i);
 
-    fmt.Fprintf(w,arreglo[i%4])
+    fmt.Fprintf(w,arreglo[i%4]) */
+    if r.Method == "POST"{
 
+      pos := r.Form.Get("y")
+    
+      i , _:=strconv.Atoi(pos)
+      fmt.Printf("%s\n",pos)
+      fmt.Fprintf(w,arreglo[i%4])
+  
+    }
   
 	
 }
