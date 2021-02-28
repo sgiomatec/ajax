@@ -4,6 +4,12 @@
     <title>Semestre i</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
     <style>
 
       #espacio1{
@@ -21,54 +27,49 @@
            
         </div>
 
+        <button class="mdc-button mdc-button--raised foo-button" onclick="mostrar()">
+            <div class="mdc-button__ripple"></div>
+            <span class="mdc-button__label">AJAX</span>
+        </button>
         <div id="espacio">
            espacio
         </div>
+        <hr>
         <div id="espacio1">
-           <p>1</p>
-           <p>2</p>
-           <p>3</p>
-           <p>4</p>
-
+           <p id="val0">0</p>
+           <p id="val1">0</p>
+           <p id="val2">0</p>
+           <p id="val3">0</p>
+           <p id="val4">0</p>
         </div>
 
 
 
-    	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
-		  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 
-		  <script type="text/javascript">
+		<script type="text/javascript">
+            let xmlhttp;
 
-		  	let xmlhttp;
-
-      	function mostrar()
-      		{
-
-            
-
-        	if (window.XMLHttpRequest)
-          		{
+      	    function mostrar() {
+        	if (window.XMLHttpRequest) {
             		xmlhttp=new XMLHttpRequest();
-          		}
-        	else
-          		{
-          		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-          		}
+          	} else {
+          		    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
 
+        	xmlhttp.onreadystatechange=function() {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                    var arr = xmlhttp.responseText.split("[")[1].split("]")[0].split(" ");
+                    for (var i = 0; i < arr.length ; i++) {
+                        document.getElementById(`val${i}`).innerHTML=arr[i];
+                    }
 
+                    //JSON.parse(xmlhttp.responseText)
 
-        	xmlhttp.onreadystatechange=function()
-          		{
-          
-          		if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            		{
-            		document.getElementById("lugardetrabajo").innerHTML=xmlhttp.responseText;
-                console.log(xmlhttp.responseText);
-                //JSON.parse(xmlhttp.responseText)
-
-            		}
-          		}
+                }
+            }
 
             var cadena="/dato"
           	xmlhttp.open("POST",cadena,true);
@@ -80,8 +81,6 @@
       		}
 
       		document.getElementById("espacio").addEventListener("click",mostrar);
-
-
-              </script>
+        </script>
 	</body>
 </html>
