@@ -38,7 +38,12 @@ var changed = [4]SendUser{
 	SendUser{false, false, false},
 }
 
-// var reset = [4][3]bool{{false, false, false}, {false, false, false}, {false, false, false}, {false, false, false}}
+var reset = [4]SendUser{
+	SendUser{false, false, false},
+	SendUser{false, false, false},
+	SendUser{false, false, false},
+	SendUser{false, false, false},
+}
 
 func mostrarHTML(w http.ResponseWriter, r *http.Request) {
 
@@ -116,19 +121,15 @@ func reto2(w http.ResponseWriter, r *http.Request) {
 
 func reto3(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		toSend := [4]UserData{}
+		toSend := [4]UserData{} // Informacion que va a enviar realmente
 		for i, v := range changed {
-
-			fmt.Println(i, v)
-			// checking for changes in data
 			var n, m, d string
 
+			// Guardará los datos que no esten bloqueados en las variables "n, m, d"
 			if !v.User {
-				fmt.Println(v.User, "YES sending user...")
 				n = data[i].User
 				v.User = true
 			} else if v.User {
-				fmt.Println(v.User, "NOT sending user...")
 				n = ""
 			}
 
@@ -146,23 +147,26 @@ func reto3(w http.ResponseWriter, r *http.Request) {
 				d = ""
 			}
 
-			fmt.Println(i, v)
-			fmt.Println("===================")
-
+			// Actualiza los permisos modificados a la variable de permisos
 			changed[i] = v
+			// Crea el objeto a enviar con la informacion permitida
 			toSend[i] = UserData{n, m, d}
 
 		}
 		json.NewEncoder(w).Encode(toSend)
 	} else if r.Method == "POST" {
+
 		w.Header().Set("Content-Type", "application/json")
 		r.ParseForm()
+
 		id, _ := strconv.Atoi(r.Form.Get("id"))
 		name := r.Form.Get("name")
 		mail := r.Form.Get("mail")
 		date, _ := strconv.ParseBool(r.Form.Get("date"))
 
 		fmt.Println("Updating data...")
+
+		// Actualiza la informacion de "data" solo cuando hay algo
 
 		if name != "" {
 			fmt.Println("name: " + data[id].User + "->" + name)
@@ -180,10 +184,12 @@ func reto3(w http.ResponseWriter, r *http.Request) {
 			data[id].Lastcon = newDate
 			changed[id].Lastcon = false
 		}
-
-		fmt.Println(changed[id])
 	}
 
+}
+
+func resetFunc(w http.ResponseWriter, r *http.Request) {
+	changed = reset // Libera los candados al estado original
 }
 
 func main() {
@@ -196,6 +202,7 @@ func main() {
 	http.HandleFunc("/cliente", cliente)
 	http.HandleFunc("/cliente2", cliente2)
 	http.HandleFunc("/cliente3", cliente3)
+	http.HandleFunc("/reset", resetFunc)
 	fmt.Println(time.Now().Format("02-01-2006 15:04:05"))
 	err := http.ListenAndServe("localhost"+":"+"8080", nil)
 	if err != nil {

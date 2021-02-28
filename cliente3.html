@@ -15,13 +15,17 @@
                 <div class="col-sm-12 col-md-6 col-lg-6">
                     <div class="row">
                         <div class="col-sm-3 col-md-3 col-lg-3" style="margin-bottom: 15px;">
-                            <button class="mdc-button mdc-button--outlined foo-button" onclick="refreshArray()" style="margin-bottom: 15px; width: 150px;">
+                            <button class="mdc-button mdc-button--raised foo-button" onclick="refreshArray()" style="margin-bottom: 15px; width: 150px;">
                                 <div class="mdc-button__ripple"></div>
                                 <span class="mdc-button__label">REFRESH</span>
                             </button>
-                            <button class="mdc-button mdc-button--raised foo-button" onclick="updateUser()">
+                            <button class="mdc-button mdc-button--outlined foo-button" onclick="updateUser()" style="margin-bottom: 15px; width: 150px;">
                                 <div class="mdc-button__ripple"></div>
                                 <span class="mdc-button__label">POST</span>
+                            </button>
+                            <button class="mdc-button mdc-button--raised foo-button" onclick="reset()" style="margin-bottom: 15px; width: 150px;">
+                                <div class="mdc-button__ripple"></div>
+                                <span class="mdc-button__label">RESET</span>
                             </button>
                         </div>
                         <div class="col-sm-9 col-md-9 col-lg-9">
@@ -33,6 +37,8 @@
                                     <button type="button" class="btn btn-secondary" onclick="setActive(2)">3</button>
                                     <button type="button" class="btn btn-secondary" onclick="setActive(3)">4</button>
                                 </div>
+                                <h5>Selected: </h5>
+                                <h4 id="activeNum" style="margin-left: 10px;"></h4>
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -99,11 +105,13 @@
 var active = null;
 
 const setActive = (n) => {
+    // Esto es para almacenar el usuario que va a ser actualizado 
     active = n;
+    document.getElementById("activeNum").innerHTML = active
     console.log(active)
 }
 
-const updateUser = () => {
+const updateUser = () => { // Esta funcion lo actualiza con un post
     if (window.XMLHttpRequest) {
         xmlhttp=new XMLHttpRequest();
     } else {
@@ -121,6 +129,24 @@ const updateUser = () => {
     xmlhttp.send(`id=${active}&name=${document.getElementById("upd_user").value}&mail=${document.getElementById("upd_mail").value}&date=${document.getElementById("upd_date").checked}`); 
 }
 
+const reset = () => { // Esto resetea la lectura de la base de datos
+    if (window.XMLHttpRequest) {
+        xmlhttp=new XMLHttpRequest();
+    } else {
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+
+    xmlhttp.onreadystatechange = () => {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log("Reading de base de datos reseteado")
+            
+        }
+    }
+
+    xmlhttp.open("GET","http://localhost:8080/reset",true);
+    xmlhttp.send() 
+}
+
 const refreshArray = () => {
 
     if (window.XMLHttpRequest) {
@@ -133,7 +159,7 @@ const refreshArray = () => {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             tmp = JSON.parse(xmlhttp.responseText);
             console.log(tmp)
-            for (var i = 0; i < 4; i++) {
+            for (var i = 0; i < 4; i++) { // Cambia la informacion en display sólo si hay algo nuevo
                 document.getElementById(`userField${i+1}`).innerHTML = tmp[i].User != "" ? tmp[i].User : document.getElementById(`userField${i+1}`).innerHTML;
                 document.getElementById(`mailField${i+1}`).innerHTML = tmp[i].Mail != "" ? tmp[i].Mail : document.getElementById(`mailField${i+1}`).innerHTML;
                 document.getElementById(`connField${i+1}`).innerHTML = tmp[i].Lastcon != "" ? tmp[i].Lastcon : document.getElementById(`connField${i+1}`).innerHTML;
