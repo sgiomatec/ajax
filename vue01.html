@@ -3,6 +3,11 @@
     <meta charset="utf-8">
     <title>Vue Semestre i</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <script src="semantic/semantic.min.js"></script>
+
    
     <style>
 
@@ -13,25 +18,134 @@
   </head>
   	<body>
         <div id="lugardetrabajo">
-        
+            {{ time }}
+            <br>
+            <div class="ui form">
+                <div class="field">
+                  <label>Autor</label>
+                  <input id="in_author" type="text" >
+                </div>
+                <div class="field">
+                  <label>Titulo</label>
+                  <input id="in_title" type="text" >
+                </div>
+                <div class="field">
+                  <label>¿Tiene oferta?</label>
+                  <input id="in_offer" type="checkbox">
+                </div>
+                <div class="field">
+                  <label>Cantidad</label>
+                  <input id="in_quant" type="text" >
+                </div>
+                <div class="field">
+                  <label>Editorial</label>
+                  <input id="in_edit" type="text" >
+                </div>
+              </div>
+
+            <button class="ui button" v-on:click="metodo">
+                Otro libro
+            </button>
+            
+            <ul>
+                <li v-for="libro in libros">
+                    {{ libro.autor }} , {{ libro.titulo }} , {{ libro.oferta }} , {{ libro.cantidad }} , {{ libro.editorial }}
+                    <p v-if="libro.oferta">Tiene oferta! :DDDDD</p>
+                    <p v-else>No tiene oferta :CCCCC</p>
+                </li>
+            </ul>
+
+            
+            <img v-bind:src="image" v-bind:alt="text" v-bind:stlye="style">    
         </div>
 
         <div id="espacio">
            espacio
         </div>
         
-
-
-		  <script type="text/javascript">
-
+        
+        <script type="text/javascript">
+        var time = new Date();
           //Una instancia de Vue que manejará esa área del documento #lugardetrabajo
-          c= new Vue({
+        c = new Vue({
             el: "#lugardetrabajo",
-            data :{
-              nombre: "La elegante vagancia"
-            }
-            
-          });
+            data: {
+                image: "https://i.ytimg.com/vi/cVl9xmRqV-c/maxresdefault.jpg",
+                text: "Calaca chida",
+                nombre: "La elegante vagancia",
+                style: {
+                    width: '100px',
+                },
+                time: time.toDateString(),
+                libros: [
+                    {
+                        autor: "Ray Badbury",
+                        titulo: "Farenheit 451",
+                        oferta: "true",
+                        cantidad: 10,
+                        editorial: "Porrua",
+                    },
+                    {
+                        autor: "Arthus C. Clarke",
+                        titulo: "El fin de la infancia",
+                        oferta: "false",
+                        cantidad: 10,
+                        editorial: "Porrua",
+                    }
+                ]
+            },
+            methods: {
+                metodo: (event) => {
+                    console.log("CLICK");
+                    
+                    var in_author = document.getElementById("in_author");
+                    var in_title = document.getElementById("in_title");
+                    var in_offer = document.getElementById("in_offer");
+                    var in_quant = document.getElementById("in_quant");
+                    var in_edit = document.getElementById("in_edit");
+                    
+                    var author = in_author.value;
+                    var title = in_title.value;
+                    var offer = in_offer.checked;
+                    var quantity = parseInt(in_quant.value);
+                    var editorial = in_edit.value;
+
+                    var new_book = true;
+
+                    for (var i = 0; i < this.c.libros.length; i++) {
+                      
+                        if (this.c.libros[i].autor == author && this.c.libros[i].titulo == title && this.c.libros[i].editorial == editorial) {
+                            // Exact same book just add
+                            
+                            new_book = false;
+                            this.c.libros[i] = {
+                                ...this.c.libros[i],
+                                cantidad: this.c.libros[i].cantidad + quantity
+                            } 
+                            console.log(this.c.libros[i].cantidad)     
+                        }
+                    }
+
+                    if (new_book) {
+                        this.c.libros.push({
+                            autor: author,
+                            titulo: title, 
+                            oferta: offer,
+                            cantidad: quantity, 
+                            editorial: editorial
+                        });
+                    }
+                    
+                    // document.getElementById("in_author").value="";
+                    // document.getElementById("in_title").value="";
+                    // document.getElementById("in_offer").checked=false;
+                    // document.getElementById("in_quant").value="";
+                    // document.getElementById("in_edit").value="";
+
+                    
+                },
+            },
+        });
 
 		  </script>
 	</body>

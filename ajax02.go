@@ -63,6 +63,11 @@ func cliente3(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, "cliente3.html")
 }
 
+func vuejs(w http.ResponseWriter, r *http.Request) {
+
+	http.ServeFile(w, r, "vue01.html")
+}
+
 func darMensaje(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
@@ -203,6 +208,7 @@ func main() {
 	http.HandleFunc("/cliente2", cliente2)
 	http.HandleFunc("/cliente3", cliente3)
 	http.HandleFunc("/reset", resetFunc)
+	http.HandleFunc("/vue", vuejs)
 	fmt.Println(time.Now().Format("02-01-2006 15:04:05"))
 	err := http.ListenAndServe("localhost"+":"+"8080", nil)
 	if err != nil {
