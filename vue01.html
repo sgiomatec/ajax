@@ -113,7 +113,11 @@
                     var new_book = true;
 
                     for (var i = 0; i < this.c.libros.length; i++) {
-                      
+                        console.log(this.c.libros[i]);
+                        console.log(this.c.libros[i].autor + " == " + author  + ":", this.c.libros[i].autor == author);
+                        console.log(this.c.libros[i].titulo + " == " + title + ":", this.c.libros[i].titulo == title);
+                        console.log(this.c.libros[i].editorial + " == " + editorial + ":", this.c.libros[i].editorial == editorial);
+
                         if (this.c.libros[i].autor == author && this.c.libros[i].titulo == title && this.c.libros[i].editorial == editorial) {
                             // Exact same book just add
                             
@@ -136,11 +140,11 @@
                         });
                     }
                     
-                    // document.getElementById("in_author").value="";
-                    // document.getElementById("in_title").value="";
-                    // document.getElementById("in_offer").checked=false;
-                    // document.getElementById("in_quant").value="";
-                    // document.getElementById("in_edit").value="";
+                    document.getElementById("in_author").value="";
+                    document.getElementById("in_title").value="";
+                    document.getElementById("in_offer").checked=false;
+                    document.getElementById("in_quant").value="";
+                    document.getElementById("in_edit").value="";
 
                     
                 },
