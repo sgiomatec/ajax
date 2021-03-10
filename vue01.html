@@ -4,64 +4,154 @@
     <title>Vue Semestre i</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <link rel="stylesheet" type="text/css" href="semantic/semantic.min.css">
-
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="semantic/semantic.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
    
     <style>
+        @font-face {
+            font-family: 'Material Icons';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://example.com/MaterialIcons-Regular.eot); /* For IE6-8 */
+            src: local('Material Icons'),
+                local('MaterialIcons-Regular'),
+                url(https://example.com/MaterialIcons-Regular.woff2) format('woff2'),
+                url(https://example.com/MaterialIcons-Regular.woff) format('woff'),
+                url(https://example.com/MaterialIcons-Regular.ttf) format('truetype');
+        }
+        .material-icons {
+            font-family: 'Material Icons';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;  /* Preferred icon size */
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
 
-    
+            /* Support for all WebKit browsers. */
+            -webkit-font-smoothing: antialiased;
+            /* Support for Safari and Chrome. */
+            text-rendering: optimizeLegibility;
 
+            /* Support for Firefox. */
+            -moz-osx-font-smoothing: grayscale;
+
+            /* Support for IE. */
+            font-feature-settings: 'liga';
+        }
     </style>
 
   </head>
   	<body>
-        <div id="lugardetrabajo">
-            {{ time }}
-            <br>
-            <div class="ui form">
-                <div class="field">
-                  <label>Autor</label>
-                  <input id="in_author" type="text" >
-                </div>
-                <div class="field">
-                  <label>Titulo</label>
-                  <input id="in_title" type="text" >
-                </div>
-                <div class="field">
-                  <label>¿Tiene oferta?</label>
-                  <input id="in_offer" type="checkbox">
-                </div>
-                <div class="field">
-                  <label>Cantidad</label>
-                  <input id="in_quant" type="text" >
-                </div>
-                <div class="field">
-                  <label>Editorial</label>
-                  <input id="in_edit" type="text" >
-                </div>
-              </div>
+        <div class="container-fluid" id="lugardetrabajo">
+            <div class="row" style="margin-top: 10px; margin-left: 10px;">
+                {{ time }}
+            </div>
+            <div class="row" style="margin-top: 10px; margin-left: 10px;">
+                La libreria esta actualmente: <a v-if="abierto">ABIERTA</a><a v-else>CERRRADA</a>
+            </div>
+            <div class="row">
+                <div class="col-lg-8">
+                    <form class="ui form" style="width: max-content;">
+                        <div class="row col-lg-12">
+                            <div class="field col-lg-6">
+                                <label>Autor</label>
+                                <input v-model="in_author" class="input-group-text form-control" id="in_author" type="text" >
+                            </div>
+                            <div class="field col-sm-6">
+                                <label>Titulo</label>
+                                <input v-model="in_title" class="form-control input-group-text" id="in_title" type="text" >
+                            </div>
+                        </div>
+                        <div class="row col-lg-12">
+                            <div class="field form-group col-sm-4">
+                                <label>Editorial</label>
+                                <input v-model="in_edit" class="form-control input-group-text" id="in_edit" type="text" >
+                            </div>
+                            <div class="field form-group col-sm-3">
+                                <label>Cantidad</label>
+                                <input v-model="in_quant" class="form-control input-group-text" id="in_quant" type="text" >
+                            </div>
+                            <div class="field form-group col-sm-2">
+                                <label>¿Tiene oferta?</label>
+                                <input v-model="in_offer" class="form-control input-group-text" id="in_offer" type="checkbox">
+                            </div>
+                            <div class="col-sm-3">
+                                <button class="ui button btn btn-success btn-lg" v-on:click="metodo" style="margin-top: 30px;">
+                                    Otro libro
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <table id="book_table" class="table table-hover" style="width: max-content;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">Autor</th>
+                                <th scope="col">Editorial</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Oferta</th>
+                                <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(libro, i) in ordenarLibros">
+                                <td>{{ libro.autor }}</td>
+                                <td>{{ libro.titulo }}</td>
+                                <td>{{ libro.editorial }}</td>
+                                <td>{{ libro.cantidad }}</td>
+                                <td v-if="libro.oferta">OFERTOOOOOOOOON</td>
+                                <td v-else>No tiene oferta :CCCCC</td>
+                                <td>
+                                    <button type="button" class="btn btn-outline-warning" v-on:click="editBook($event, i)">
+                                        <span class="material-icons">edit</span>
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" v-on:click="deleteBook($event, i)">
+                                        <span class="material-icons">delete</span>
+                                    </button>
+                                </td>
 
-            <button class="ui button" v-on:click="metodo">
-                Otro libro
-            </button>
-            
-            <ul>
-                <li v-for="libro in libros">
-                    {{ libro.autor }} , {{ libro.titulo }} , {{ libro.oferta }} , {{ libro.cantidad }} , {{ libro.editorial }}
-                    <p v-if="libro.oferta">Tiene oferta! :DDDDD</p>
-                    <p v-else>No tiene oferta :CCCCC</p>
-                </li>
-            </ul>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
+                <div class="col-lg-4">
+                    <button type="button" class="btn btn-outline-success" v-on:click="getFilms">
+                        <span class="material-icons" style="margin-right: 5px;">update</span><a style="font-size: 18;">UPDATE FILMS</a>
+                    </button>
+                    <table id="film_table" class="table table-hover" style="width: max-content;">
+                        <thead>
+                            <tr>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">Director</th>
+                                <th scope="col">Año</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(film, i) in ordenarFilms">
+                                <td>{{ film.Title }}</td>
+                                <td>{{ film.Director }}</td>
+                                <td>{{ film.Year }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
             
-            <img v-bind:src="image" v-bind:alt="text" v-bind:stlye="style">    
+            
         </div>
 
-        <div id="espacio">
-           espacio
-        </div>
         
         
         <script type="text/javascript">
@@ -70,6 +160,15 @@
         c = new Vue({
             el: "#lugardetrabajo",
             data: {
+                in_author: "",
+                in_title: "",
+                in_offer: false,
+                in_quant: "",
+                in_edit: "",
+                edit_mode: false,
+                edit_ind: 0,
+                abierto: true,
+                films: [],
                 image: "https://i.ytimg.com/vi/cVl9xmRqV-c/maxresdefault.jpg",
                 text: "Calaca chida",
                 nombre: "La elegante vagancia",
@@ -95,32 +194,65 @@
                 ]
             },
             methods: {
+                getFilms: (event) => {
+                    console.log("Cargando info");
+                    if (window.XMLHttpRequest) {
+                        xmlhttp=new XMLHttpRequest();
+                    } else {
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+
+                    xmlhttp.onreadystatechange = () => {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            tmp = JSON.parse(xmlhttp.responseText);
+                            this.c.films = tmp;
+                            this.c.films = _.orderBy(this.c.films, ['year']);
+                            console.log("computed films", this.c.films);
+                            return this.c.films;
+                        } else if (xmlhttp.readyState == 4) {
+                            console.log(xmlhttp.status);
+                        }
+                    }
+
+                    xmlhttp.open("GET","http://localhost:8080/films",true);
+                    xmlhttp.send();
+                },
+                deleteBook: (event, i) =>{
+                    this.c.libros.splice(i,1);
+                },
+                editBook: (event, i) => {
+
+                    this.c.in_author = this.c.libros[i].autor;
+                    this.c.in_title = this.c.libros[i].titulo;
+                    this.c.in_quant = this.c.libros[i].cantidad;
+                    this.c.in_offer = this.c.libros[i].oferta;
+                    this.c.in_edit = this.c.libros[i].editorial;
+
+                    this.c.edit_mode = true;
+                    this.c.edit_ind = i;
+                },
                 metodo: (event) => {
-                    console.log("CLICK");
                     
-                    var in_author = document.getElementById("in_author");
-                    var in_title = document.getElementById("in_title");
-                    var in_offer = document.getElementById("in_offer");
-                    var in_quant = document.getElementById("in_quant");
-                    var in_edit = document.getElementById("in_edit");
                     
-                    var author = in_author.value;
-                    var title = in_title.value;
-                    var offer = in_offer.checked;
-                    var quantity = parseInt(in_quant.value);
-                    var editorial = in_edit.value;
+                    var author = this.c.in_author;
+                    var title = this.c.in_title;
+                    var offer = this.c.in_offe;
+                    var quantity = parseInt(this.c.in_quant);
+                    var editorial = this.c.in_edit;
 
                     var new_book = true;
-
                     for (var i = 0; i < this.c.libros.length; i++) {
-                        console.log(this.c.libros[i]);
-                        console.log(this.c.libros[i].autor + " == " + author  + ":", this.c.libros[i].autor == author);
-                        console.log(this.c.libros[i].titulo + " == " + title + ":", this.c.libros[i].titulo == title);
-                        console.log(this.c.libros[i].editorial + " == " + editorial + ":", this.c.libros[i].editorial == editorial);
+
+                        if (this.c.edit_mode && this.c.edit_ind != undefined && this.c.libros[this.c.edit_ind] == this.c.libros[i]) {
+                            console.log("BORRANDO")
+                            this.c.libros.splice(i,1);
+                            this.c.edit_mode = false;
+                            this.c.edit_ind = undefined;
+                            continue;
+                        }
 
                         if (this.c.libros[i].autor == author && this.c.libros[i].titulo == title && this.c.libros[i].editorial == editorial) {
                             // Exact same book just add
-                            
                             new_book = false;
                             this.c.libros[i] = {
                                 ...this.c.libros[i],
@@ -130,6 +262,8 @@
                         }
                     }
 
+                    
+                   
                     if (new_book) {
                         this.c.libros.push({
                             autor: author,
@@ -145,12 +279,59 @@
                     document.getElementById("in_offer").checked=false;
                     document.getElementById("in_quant").value="";
                     document.getElementById("in_edit").value="";
+                    this.c.edit_mode = false;
 
-                    
+                    event.preventDefault();
+                }
+            },
+            computed: {
+                ordenarLibros: function() {
+                    console.log("computed autor");
+                    this.libros = _.orderBy(this.libros, ['autor']);
+                    return this.libros;
                 },
+                ordenarLibrosCantidad: () => {
+                    console.log("computed cantidad");
+                    this.libros = _.orderBy(this.libros, ['cantidad']);
+                    return this.libros;
+                },
+                ordenarFilms: () => {
+                    if (window.XMLHttpRequest) {
+                        xmlhttp=new XMLHttpRequest();
+                    } else {
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+
+                    xmlhttp.onreadystatechange = () => {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            tmp = JSON.parse(xmlhttp.responseText);
+                            this.c.films = tmp;
+                            this.c.films = _.orderBy(this.c.films, ['year']);
+                            console.log("computed films", this.c.films);
+                            return this.c.films;
+                        }
+                    }
+
+                    xmlhttp.open("GET","http://localhost:8080/films",true);
+                    xmlhttp.send();
+                    
+                }
+            },
+            watch:{
+                nombre: (data) => {
+                   console.log (data);
+                },
+                abierto: (data) => {
+                    console.log(data);
+                    if (!data) {
+                        document.getElementById("book_table").className = "table table-hover table-dark";
+                    } else {
+                        document.getElementById("book_table").className = "table table-hover table-stripped";
+                    }
+                    console.log(document.getElementById("book_table").className);
+                }
             },
         });
-
-		  </script>
+        </script>
 	</body>
 </html>
